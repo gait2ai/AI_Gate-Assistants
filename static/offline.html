@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>غير متصل بالإنترنت - AI Gate Assistant</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
+    <style>
+        :root {
+            --primary-green: #2a9d37;
+            --white: #ffffff;
+            --background-light: #f5f5f5;
+            --text-primary: #333333;
+            --text-secondary: #757575;
+            --space-md: 12px;
+            --space-xl: 20px;
+            --radius-lg: 15px;
+            --shadow-lg: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --font-family: 'Segoe UI', 'Arial', sans-serif;
+        }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: var(--space-xl);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 40px); /* Adjust to match body padding */
+            text-align: center;
+        }
+        .offline-container {
+            background: var(--white);
+            padding: calc(var(--space-xl) * 2);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            max-width: 500px;
+            width: 90%;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: var(--space-xl);
+        }
+        h1 {
+            color: var(--primary-green);
+            margin-bottom: var(--space-md);
+            font-size: 1.8rem;
+        }
+        p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+            font-size: 1rem;
+        }
+        .retry-button {
+            background-color: var(--primary-green);
+            color: var(--white);
+            border: none;
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .retry-button:hover {
+            background-color: #0d7219; /* Darker green */
+        }
+         @media (max-width: 480px) {
+            .logo { width: 60px; height: 60px; }
+            h1 { font-size: 1.5rem; }
+            p { font-size: 0.9rem; }
+            .retry-button { font-size: 0.9rem; padding: 10px 18px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <img src="assets/logo.png" alt="شعار المساعد" class="logo" />
+        <h1>أنت غير متصل بالإنترنت حاليًا</h1>
+        <p>
+            يبدو أنك فقدت الاتصال بالإنترنت. يرجى التحقق من اتصالك والمحاولة مرة أخرى.
+        </p>
+        <p>
+            بعض وظائف التطبيق قد لا تعمل حتى يتم استعادة الاتصال.
+        </p>
+        <a href="/" class="retry-button" onclick="if(navigator.onLine){ window.location.reload(true); return false;}">
+            إعادة المحاولة
+        </a>
+    </div>
+</body>
+</html>
