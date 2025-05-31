@@ -86,10 +86,11 @@ body {
     background-color: var(--background-light);
     color: var(--text-primary);
     line-height: 1.5;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    margin: 0;
+    /*  overflow: hidden;  */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -116,15 +117,19 @@ body {
 .chat-container {
     max-width: 900px;
     width: 100%;
-    margin: var(--space-xl) auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-sm);
     background: var(--white);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 40px);
+    flex-grow: 1;
     overflow: hidden;
     position: relative;
+    max-height: calc(100vh - (2 * var(--space-sm)));
 }
 
 /* Chat Header */
@@ -284,20 +289,26 @@ body {
 .user-message {
     background: linear-gradient(135deg, var(--user-bg) 0%, #cce7ff 100%);
     color: var(--user-text);
-    float: left;
-    margin-right: auto;
-    border-bottom-left-radius: var(--radius-sm);
-    flex-direction: row-reverse;
+    float: right;
+    margin-left: auto;
+    margin-right: 0;
+    border-bottom-right-radius: var(--radius-sm);
+    border-bottom-left-radius: var(--radius-xl);
+    /* flex-direction: row-reverse; */
     box-shadow: var(--shadow-sm);
+    text-align: right;
 }
 
 .assistant-message {
     background: linear-gradient(135deg, var(--assistant-bg) 0%, var(--accent-orange-dark) 100%);
     color: var(--assistant-text);
-    float: right;
-    margin-left: auto;
-    border-bottom-right-radius: var(--radius-sm);
+    float: left;
+    margin-right: auto;
+    margin-left: 0;
+    border-bottom-left-radius: var(--radius-sm);
+    border-bottom-right-radius: var(--radius-xl);
     box-shadow: var(--shadow-sm);
+    text-align: right;
 }
 
 .assistant-logo {
@@ -337,12 +348,12 @@ body {
 }
 
 .user-message .message-time {
-    text-align: right;
+    text-align: left;
 }
 
 .assistant-message .message-time {
     color: rgba(255, 255, 255, 0.8);
-    text-align: left;
+    text-align: right;
 }
 
 /* Welcome Message */
@@ -644,8 +655,10 @@ body {
 /* Responsive Design */
 @media (max-width: 768px) {
     .chat-container {
-        margin: var(--space-md);
-        height: calc(100vh - 24px);
+       /* margin: var(--space-md); */
+     /*   height: calc(100vh - 24px); */
+           margin-bottom: var(--space-xs);
+           max-height: calc(100vh - (2 * var(--space-xs)));
         border-radius: var(--radius-md);
     }
 
@@ -711,8 +724,8 @@ body {
 
 @media (max-width: 480px) {
     .chat-container {
-        margin: var(--space-sm);
-        height: calc(100vh - 16px);
+      /*  margin: var(--space-sm); */
+     /*   height: calc(100vh - 16px); */
     }
 
     .chat-title {
