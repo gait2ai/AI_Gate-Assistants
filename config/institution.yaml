@@ -1,11 +1,11 @@
 # Institution-Specific Configuration
 
 institution:
-  name: "My University"
-  description: "Leading research university"
-  website: "https://myuniversity.edu"
-  contact_email: "aigate@myuniversity.edu"
-  timezone: "America/New_York"
+  name: "BCFHD"
+  description: "humanitarian organization"
+  website: "https://www.bcfhd.org/"
+  contact_email: "bena@bcfhd.org"
+  timezone: "Arabia Standard Time"
   
   # Institution-specific settings
   departments:
