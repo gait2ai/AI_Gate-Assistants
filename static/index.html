@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <!-- Essential Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="مساعد ذكي لتقديم المعلومات والدعم - AI Assistant for providing information and support" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#2a9d37" />
+    
+    <!-- Performance Optimizations -->
+    <meta http-equiv="x-dns-prefetch-control" content="on" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" href="static/assets/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="static/assets/logo.png" />
+    <link rel="manifest" href="static/manifest.json" />
+
+    <!-- Page Title (dynamically updated by JavaScript) -->
+    <title id="pageTitle">AI Gate Assistant</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="static/css/style.css" />
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="static/assets/logo.png" as="image" type="image/png" />
+    <link rel="preload" href="static/js/app.js" as="script" />
+</head>
+<body>
+    <!-- Skip to Content Link for Accessibility -->
+    <a href="#chatMessages" class="skip-link visually-hidden">تخطي إلى المحتوى الرئيسي</a>
+    
+    <!-- Main Application Container -->
+    <div class="chat-container" role="application" aria-label="مساعد ذكي للمحادثة">
+        
+        <!-- Application Header -->
+        <header class="chat-header" role="banner">
+            <img 
+                src="static/assets/logo.png" 
+                alt="شعار المؤسسة" 
+                class="logo" 
+                id="institutionLogo"
+                loading="eager"
+                decoding="async"
+                onerror="this.style.display='none'; console.warn('Logo failed to load');"
+            />
+            <h1 class="chat-title" id="chatHeaderText">AI Gate Assistant</h1>
+        </header>
+
+        <!-- Quick Actions Section -->
+        <section class="quick-questions" aria-labelledby="quickQuestionsLabel">
+            <h2 id="quickQuestionsLabel" class="visually-hidden">أسئلة سريعة مقترحة</h2>
+            <button 
+                type="button" 
+                class="quick-btn" 
+                data-message="أريد بعض المعلومات حول الجمعية"
+                aria-describedby="quickQuestionsLabel"
+            >
+                أريد بعض المعلومات حول الجمعية
+            </button>
+            <button 
+                type="button" 
+                class="quick-btn" 
+                data-message="كيف أتقدم بشكوى"
+                aria-describedby="quickQuestionsLabel"
+            >
+                كيف أتقدم بشكوى
+            </button>
+            <button 
+                type="button" 
+                class="quick-btn" 
+                data-message="ما هي المشاريع التي تقوم بها الجمعية"
+                aria-describedby="quickQuestionsLabel"
+            >
+                ما هي المشاريع التي تقوم بها الجمعية
+            </button>
+        </section>
+
+        <!-- Chat Messages Display Area -->
+        <main 
+            class="chat-messages" 
+            id="chatMessages" 
+            role="log" 
+            aria-live="polite" 
+            aria-atomic="false"
+            aria-label="منطقة المحادثة"
+            tabindex="0"
+        >
+            <!-- Welcome Message (will be replaced by JavaScript if needed) -->
+            <div class="welcome-message" id="welcomeMessage" style="display: none;">
+                <div class="message assistant-message">
+                    <img 
+                        src="static/assets/logo.png" 
+                        alt="شعار المساعد" 
+                        class="assistant-logo"
+                        loading="lazy"
+                        onerror="this.style.display='none';"
+                    />
+                    <div class="message-content">
+                        <p>مرحباً! أنا مساعدك الذكي. كيف يمكنني مساعدتك اليوم؟</p>
+                    </div>
+                    <div class="message-time"></div>
+                </div>
+            </div>
+            <!-- Chat messages will be dynamically added here by JavaScript -->
+        </main>
+
+        <!-- Chat Input Section -->
+        <footer class="chat-input-area" role="contentinfo">
+            <form 
+                id="chatForm" 
+                class="chat-input" 
+                autocomplete="off"
+                novalidate
+            >
+                <label for="messageInput" class="visually-hidden">اكتب رسالتك هنا</label>
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    name="message"
+                    placeholder="اكتب رسالتك هنا..." 
+                    autocomplete="off" 
+                    autocorrect="off"
+                    autocapitalize="sentences"
+                    spellcheck="true"
+                    dir="rtl"
+                    lang="ar"
+                    aria-label="حقل إدخال الرسالة"
+                    aria-describedby="inputHelp"
+                    maxlength="2000"
+                    required
+                />
+                <div id="inputHelp" class="visually-hidden">
+                    اكتب رسالتك واضغط Enter أو زر الإرسال
+                </div>
+                <button 
+                    type="submit" 
+                    class="send-button" 
+                    id="sendButton" 
+                    aria-label="إرسال الرسالة"
+                    disabled
+                >
+                    <svg 
+                        class="send-icon" 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 24 24" 
+                        fill="currentColor" 
+                        aria-hidden="true"
+                        role="img"
+                    >
+                        <title>إرسال</title>
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                    </svg>
+                </button>
+            </form>
+            
+            <!-- Connection Status Indicator -->
+            <div 
+                id="connectionStatus" 
+                class="connection-status visually-hidden" 
+                role="status" 
+                aria-live="polite"
+            ></div>
+        </footer>
+    </div>
+
+    <!-- Error Modal for Critical Errors -->
+    <div 
+        id="errorModal" 
+        class="error-modal" 
+        role="dialog" 
+        aria-modal="true" 
+        aria-labelledby="errorModalTitle"
+        style="display: none;"
+    >
+        <div class="error-modal-content">
+            <h2 id="errorModalTitle">خطأ في التطبيق</h2>
+            <p id="errorModalMessage">حدث خطأ غير متوقع</p>
+            <button 
+                type="button" 
+                id="errorModalClose" 
+                class="error-modal-close"
+                aria-label="إغلاق رسالة الخطأ"
+            >
+                إغلاق
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div 
+        id="loadingOverlay" 
+        class="loading-overlay" 
+        role="status" 
+        aria-label="جاري التحميل"
+        style="display: none;"
+    >
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>جاري التحميل...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="static/js/app.js" defer></script>
+    
+    <!-- Service Worker Registration (Optional) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(function(registrationError) {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+
+    <!-- No JavaScript Fallback -->
+    <noscript>
+        <div class="noscript-message">
+            <h2>JavaScript مطلوب</h2>
+            <p>يحتاج هذا التطبيق إلى JavaScript ليعمل بشكل صحيح. يرجى تفعيل JavaScript في متصفحك.</p>
+            <p>This application requires JavaScript to function properly. Please enable JavaScript in your browser.</p>
+        </div>
+    </noscript>
+</body>
+</html>
