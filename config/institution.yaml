@@ -1,0 +1,40 @@
+# Institution-Specific Configuration
+
+institution:
+  name: "My University"
+  description: "Leading research university"
+  website: "https://myuniversity.edu"
+  contact_email: "aigate@myuniversity.edu"
+  timezone: "America/New_York"
+  
+  # Institution-specific settings
+  departments:
+    - "Computer Science"
+    - "Engineering" 
+    - "Mathematics"
+  
+  academic_calendar:
+    semester_system: true
+    current_semester: "Fall 2024"
+
+# Custom AI model preferences
+ai_models:
+  primary_model: "anthropic/claude-3-sonnet"
+  temperature: 0.5
+  
+# Institution-specific prompts
+prompts:
+  institution_context: |
+    You are an AI assistant for My University, a leading research institution
+    known for excellence in STEM fields. Always provide accurate, helpful
+    information while maintaining the university's reputation for academic rigor.
+    
+  welcome_message: "Welcome to My University's AI Assistant!"
+  
+# Custom research settings
+website_research:
+  priority_domains:
+    - "myuniversity.edu"
+    - "research.myuniversity.edu"
+  exclude_domains:
+    - "student-portal.myuniversity.edu"

@@ -1,0 +1,21 @@
+# Local Development Configuration
+# This file should be in .gitignore
+
+# Development settings
+logging:
+  level: "DEBUG"
+  console_output: true
+
+# Local API settings
+api:
+  cors_origins: ["http://localhost:3000", "http://127.0.0.1:3000"]
+
+# Development cache settings
+cache:
+  ttl: 60  # Shorter cache for development
+  max_size: 100
+
+# Test AI model (cheaper for development)
+ai_models:
+  primary_model: "openai/gpt-3.5-turbo"
+  timeout: 10

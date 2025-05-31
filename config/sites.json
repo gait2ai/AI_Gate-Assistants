@@ -1,0 +1,5 @@
+{
+  "website_url": "https://bcfhd.org",
+  "important_pages": ["/projects", "/jobs", "/about"],
+  "exclude_patterns": ["/admin", "/wp-login"]
+}
