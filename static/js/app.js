@@ -543,13 +543,24 @@ document.addEventListener('DOMContentLoaded', function () {
         
         // Display user message
         displayUserMessage(validatedMessage);
-        messageInputElement.value = '';
-        messageInputElement.focus();
+        messageInputElement.value = ''; // مسح الحقل بعد الإرسال
+        
+        // *** MODIFIED: Disable send button again after sending and clear input ***
+        if (sendButtonElement) {
+            sendButtonElement.disabled = true;
+            sendButtonElement.setAttribute('aria-label', 'اكتب رسالة للإرسال');
+        }
+        // *** MODIFIED: Reset input field height if you are auto-resizing it ***
+        if (messageInputElement) {
+            messageInputElement.style.height = 'auto';
+            messageInputElement.focus(); // إعادة التركيز بعد مسح النص وتعديل الارتفاع
+        }
+
 
         // Set loading state
         isFetchingResponse = true;
-        sendButtonElement.disabled = true;
-        sendButtonElement.setAttribute('aria-label', 'جاري الإرسال...');
+        // sendButtonElement.disabled = true; // Already disabled above
+        // sendButtonElement.setAttribute('aria-label', 'جاري الإرسال...'); // Can update if desired
         
         const typingIndicatorElement = createTypingIndicator();
         chatMessagesContainer.appendChild(typingIndicatorElement);
@@ -560,8 +571,16 @@ document.addEventListener('DOMContentLoaded', function () {
         } finally {
             // Always reset state
             isFetchingResponse = false;
-            sendButtonElement.disabled = false;
-            sendButtonElement.setAttribute('aria-label', 'إرسال الرسالة');
+            // *** MODIFIED: Ensure button state reflects that input is now empty ***
+            if (sendButtonElement) {
+                 if (messageInputElement.value.trim().length > 0) { // Should be empty, but check just in case
+                    sendButtonElement.disabled = false;
+                    sendButtonElement.setAttribute('aria-label', 'إرسال الرسالة');
+                } else {
+                    sendButtonElement.disabled = true;
+                    sendButtonElement.setAttribute('aria-label', 'اكتب رسالة للإرسال');
+                }
+            }
             
             // Remove typing indicator if it still exists
             if (typingIndicatorElement && typingIndicatorElement.parentNode) {
@@ -695,6 +714,8 @@ document.addEventListener('DOMContentLoaded', function () {
             throttledSendMessage();
         });
     } else if (messageInputElement) {
+        // *** MODIFIED: This else-if might not be strictly necessary if chatFormElement always exists.
+        // However, keeping it for robustness if the form might be absent in some edge cases.
         messageInputElement.addEventListener('keypress', function (e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -711,6 +732,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (buttonText && messageInputElement) {
                     messageInputElement.value = buttonText;
                     messageInputElement.focus();
+                    // *** ADDED: Trigger input event to update send button state ***
+                    messageInputElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
                     throttledSendMessage();
                 }
             } catch (error) {
@@ -721,23 +744,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Input field enhancements
     if (messageInputElement) {
-        // Auto-resize textarea behavior simulation
-        messageInputElement.addEventListener('input', function() {
-            // Reset height to calculate new height
-            this.style.height = 'auto';
-            // Set new height (max 100px to prevent excessive growth)
-            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
-        });
+        // *** MODIFIED: Combined event listeners for 'input' and initial button state check ***
+        // Disable send button initially if it exists and input is empty
+        if (sendButtonElement && messageInputElement.value.trim().length === 0) {
+            sendButtonElement.disabled = true;
+            sendButtonElement.setAttribute('aria-label', 'اكتب رسالة للإرسال');
+        } else if (sendButtonElement) { // Enable if there's pre-filled text (e.g., browser autocomplete)
+            sendButtonElement.disabled = false;
+            sendButtonElement.setAttribute('aria-label', 'إرسال الرسالة');
+        }
 
-        // Character counter (visual feedback)
         messageInputElement.addEventListener('input', function() {
+            // Auto-resize textarea behavior simulation
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+
+            // Character counter (visual feedback)
             const length = this.value.length;
-            const maxLength = 2000;
+            const maxLength = 2000; // Ensure this matches the HTML attribute
             
-            if (length > maxLength * 0.9) { // Warn at 90%
+            if (length > maxLength * 0.9) {
                 this.style.borderColor = length > maxLength ? '#ff4444' : '#ff8800';
             } else {
                 this.style.borderColor = '';
+            }
+
+            // Enable/disable send button based on input content
+            if (sendButtonElement) {
+                if (this.value.trim().length > 0) {
+                    sendButtonElement.disabled = false;
+                    sendButtonElement.setAttribute('aria-label', 'إرسال الرسالة');
+                } else {
+                    sendButtonElement.disabled = true;
+                    sendButtonElement.setAttribute('aria-label', 'اكتب رسالة للإرسال');
+                }
             }
         });
     }
@@ -816,6 +856,16 @@ document.addEventListener('DOMContentLoaded', function () {
             // Focus on input field
             if (messageInputElement) {
                 messageInputElement.focus();
+                // *** ADDED: Initialize send button state on load ***
+                if (sendButtonElement) {
+                     if (messageInputElement.value.trim().length > 0) {
+                        sendButtonElement.disabled = false;
+                        sendButtonElement.setAttribute('aria-label', 'إرسال الرسالة');
+                    } else {
+                        sendButtonElement.disabled = true;
+                        sendButtonElement.setAttribute('aria-label', 'اكتب رسالة للإرسال');
+                    }
+                }
             }
             
             console.info("AI Gate Application initialized successfully");
