@@ -17,5 +17,5 @@ cache:
 
 # Test AI model (cheaper for development)
 ai_models:
-  primary_model: "openai/gpt-3.5-turbo"
+  primary_model: "deepseek/deepseek-prover-v2:free"
   timeout: 10
