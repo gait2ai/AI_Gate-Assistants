@@ -19,7 +19,7 @@ institution:
 
 # Custom AI model preferences
 ai_models:
-  primary_model: "anthropic/claude-3-sonnet"
+  primary_model: "deepseek/deepseek-prover-v2:free"
   temperature: 0.5
   
 # Institution-specific prompts
