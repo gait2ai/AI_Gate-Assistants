@@ -1,0 +1,128 @@
+# Default Configuration for AI Gate Application
+
+# -----------------------------------------------------------------------------
+# Institution Information (يستخدمها PromptBuilder و MainApplication)
+# -----------------------------------------------------------------------------
+institution:
+  name: "Your Institution Name"                 # اسم المؤسسة
+  description: "Default institution description"  # وصف المؤسسة
+  website: "https://your-institution.edu"       # الموقع الإلكتروني للمؤسسة
+  contact_email: "support@your-institution.edu" # البريد الإلكتروني للاتصال
+  timezone: "UTC"                               # المنطقة الزمنية الافتراضية
+
+# -----------------------------------------------------------------------------
+# AI Models Configuration (يستخدمها AIHandler)
+# -----------------------------------------------------------------------------
+ai_models:
+  # الطريقة 1: نموذج أساسي ونماذج احتياطية (يفضل إذا كان هناك منطق اختيار معين)
+  primary_model: "deepseek/deepseek-prover-v2:free"     # النموذج الأساسي المفضل
+  fallback_models:                              # قائمة بالنماذج الاحتياطية بالترتيب
+    - "mistralai/mistral-small-3.1-24b-instruct:free"
+    - "microsoft/phi-4-reasoning:free"
+    - "nousresearch/deephermes-3-mistral-24b-preview:free"
+    - "qwen/qwen3-4b:free"
+    - "deepseek/deepseek-r1-distill-qwen-32b:free"
+  
+  # الطريقة 2: قائمة مباشرة بالنماذج (أبسط إذا كان الترتيب هو المهم فقط)
+  # models:
+  #   - "anthropic/claude-3-haiku"
+  #   - "openai/gpt-3.5-turbo"
+  #   - "meta-llama/llama-2-7b-chat"
+
+  base_url: "https://openrouter.ai/api/v1/chat/completions" # نقطة نهاية API
+  timeout: 30                                   # مهلة الاتصال بالـ API (بالثواني)
+  max_tokens: 1500                              # الحد الأقصى للتوكنز في الرد
+  temperature: 0.7                              # درجة حرارة النموذج (للإبداع)
+  max_retries: 3                                # عدد محاولات إعادة الاتصال عند الفشل
+  retry_delay: 1                                # مدة الانتظار بين المحاولات (بالثواني)
+  max_consecutive_failures: 5                   # عدد مرات الفشل المتتالية قبل اعتبار النموذج غير متاح مؤقتًا
+  rate_limit_window: 60                         # مدة نافذة تحديد المعدل (بالثواني)
+  
+  min_response_length: 10                       # الحد الأدنى لطول الرد المقبول
+  max_response_length: 8000                     # الحد الأقصى لطول الرد المقبول
+  preserve_markdown: false                      # هل يتم الحفاظ على تنسيق Markdown في الرد (true/false)
+
+  # إعدادات اختيارية للـ payload الخاص بالنموذج
+  # top_p: 0.9
+  # frequency_penalty: 0.0
+  # presence_penalty: 0.0
+
+  fallback_responses:                           # قائمة بنصوص الردود الاحتياطية عند فشل جميع النماذج
+    - "I apologize, but I'm currently experiencing technical difficulties. Please try again in a few moments."
+    - "I'm temporarily unable to process your request due to system issues. Please contact support if this persists."
+    - "There seems to be a temporary service disruption. Please try your question again shortly."
+    # يمكن إضافة ردود خاصة بالـ rate limit أو timeout إذا كان AIHandler سيميزها
+
+# -----------------------------------------------------------------------------
+# Cache Configuration (يستخدمها CacheManager و MainApplication لتهيئة CacheManager)
+# -----------------------------------------------------------------------------
+cache:
+  max_size: 1000                                # الحد الأقصى لعدد العناصر في الذاكرة المؤقتة
+  ttl: 3600                                     # مدة البقاء الافتراضية للعناصر (بالثواني، ساعة واحدة)
+  cleanup_interval: 300                         # الفاصل الزمني لتنظيف العناصر منتهية الصلاحية (بالثواني، 5 دقائق)
+
+  # إعدادات اختيارية لتجاوز الإعدادات الافتراضية لكل فئة cache
+  # القيم المعروضة هنا هي الافتراضيات المقترحة في كود CacheManager
+  categories:
+    chat_response: { ttl: 3600, persistent: true, compress: true }
+    question_analysis: { ttl: 1800, persistent: true, compress: false }
+    website_research: { ttl: 7200, persistent: true, compress: true }
+    prompt_template: { ttl: 0, persistent: true, compress: false } # ttl=0 يعني دائم
+    ai_response: { ttl: 3600, persistent: true, compress: true }
+    # general: لا حاجة لتحديدها هنا، ستستخدم ttl الافتراضي العام
+
+# -----------------------------------------------------------------------------
+# Question Processing (يستخدمها QuestionProcessor)
+# -----------------------------------------------------------------------------
+question_processing:
+  min_length: 3                                 # الحد الأدنى لطول السؤال
+  max_length: 2000                              # الحد الأقصى لطول السؤال
+  supported_languages: ["en", "ar", "es", "fr", "de"] # اللغات المدعومة
+  min_confidence_threshold: 0.6                           # الحد الأدنى لدرجة الثقة في تحليل السؤال
+  enable_caching: true                          # هل يتم تفعيل التخزين المؤقت لتحليلات الأسئلة
+
+# -----------------------------------------------------------------------------
+# Website Research (يستخدمها WebsiteResearcher)
+# -----------------------------------------------------------------------------
+website_research:
+  max_results: 10                               # الحد الأقصى لعدد نتائج البحث
+  similarity_threshold: 0.6                     # عتبة التشابه الدنيا للنتائج
+  content_snippet_length: 500                   # طول المقتطف من المحتوى
+  index_refresh_interval: 86400                 # الفاصل الزمني لتحديث فهرس البحث (بالثواني، 24 ساعة) - (إذا كان هناك فهرسة)
+  
+  keyword_boost_factor: 1.5                     # معامل تعزيز الكلمات المفتاحية
+  title_boost_factor: 2.0                       # معامل تعزيز العنوان
+  summary_boost_factor: 1.3                     # معامل تعزيز الملخص
+  # cache_ttl: 3600                             # TTL خاص بذاكرة التخزين المؤقت لنتائج البحث (يمكن إدارته عبر CacheManager categories)
+
+# -----------------------------------------------------------------------------
+# Prompt Templates (يستخدمها PromptBuilder)
+# -----------------------------------------------------------------------------
+prompts:
+  system_template_file: "system_prompt.txt"     # اسم ملف قالب الأمر الرئيسي (في مجلد config)
+                                                # اتركه فارغًا أو احذفه إذا كان القالب المضمن في الكود هو الافتراضي دائمًا
+  max_context_length: 4000                      # الحد الأقصى لطول السياق المأخوذ من نتائج البحث
+  max_prompt_length: 8000                       # الحد الأقصى لطول الأمر النهائي المرسل للـ AI
+  context_truncation_strategy: 'smart'          # استراتيجية اقتطاع السياق ('smart', 'end', 'middle')
+  prompt_optimization: true                     # هل يتم تفعيل تحسين الأوامر (true/false)
+  # include_sources: true                       # هل يتم تضمين المصادر في الرد (يجب أن تدعمها منطق الرد)
+  # response_format: "markdown"                 # تنسيق الرد المتوقع (يجب أن تدعمها منطق الرد)
+
+# -----------------------------------------------------------------------------
+# Logging Configuration (يستخدمها utils.setup_logging و MainApplication)
+# -----------------------------------------------------------------------------
+logging:
+  level: "INFO"                                 # مستوى التسجيل (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  max_file_size_mb: 10                          # الحد الأقصى لحجم ملف السجل (بالميجابايت)
+  backup_count: 5                               # عدد ملفات السجل الاحتياطية
+  console_output: true                          # هل يتم عرض السجلات على الكونسول (true/false)
+  # log_format: "%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s" # تنسيق السجل (اختياري)
+
+# -----------------------------------------------------------------------------
+# API Configuration (يستخدمها MainApplication - FastAPI)
+# -----------------------------------------------------------------------------
+api:
+  cors_origins: ["*"]                           # قائمة المصادر المسموح لها بالوصول (CORS)
+  # rate_limit_requests: 100                    # عدد الطلبات المسموح بها في نافذة تحديد المعدل (لـ FastAPI rate limiter إذا استخدم)
+  # rate_limit_window: 60                       # نافذة تحديد المعدل (بالثواني) (لـ FastAPI rate limiter إذا استخدم)
+  gzip_compression: true                        # هل يتم تفعيل ضغط GZip للردود (true/false)
