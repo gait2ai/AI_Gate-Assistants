@@ -1,0 +1,5 @@
+min_keyword_frequency: 2
+exclude_categories: ['general', 'misc']
+sort_keywords: true
+custom_stopwords: ['university', 'college', 'institution']
+extract_from_title_summary: true
