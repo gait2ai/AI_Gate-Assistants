@@ -12,10 +12,10 @@ api:
 
 # Development cache settings
 cache:
-  ttl: 60  # Shorter cache for development
-  max_size: 100
+  ttl: 3600  # Shorter cache for development
+  max_size: 1000
 
 # Test AI model (cheaper for development)
 ai_models:
   primary_model: "deepseek/deepseek-prover-v2:free"
-  timeout: 10
+  timeout: 20
