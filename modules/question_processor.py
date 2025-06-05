@@ -191,11 +191,11 @@ class QuestionProcessor:
             self._initialize_fallback_components()
     
     def _initialize_fallback_components(self):
-    """Initialize fallback components when NLTK is not available or fails."""
-    logger.info("Initializing fallback text processing components")
+        """Initialize fallback components when NLTK is not available or fails."""
+        logger.info("Initializing fallback text processing components")
     
-    self.lemmatizer = None
-    self.nltk_is_operational = False
+        self.lemmatizer = None
+        self.nltk_is_operational = False
     
     # Fallback stopwords for multiple languages
     fallback_stopwords = {
