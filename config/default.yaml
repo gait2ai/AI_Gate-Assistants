@@ -1,0 +1,132 @@
+# Default Configuration for AI Gate Application
+
+# -----------------------------------------------------------------------------
+# Institution Information
+# -----------------------------------------------------------------------------
+institution:
+  name: "Your Institution Name"
+  description: "Default institution description"
+  website: "https://your-institution.edu"
+  contact_email: "support@your-institution.edu"
+  timezone: "UTC"
+
+# -----------------------------------------------------------------------------
+# AI Models Configuration
+# -----------------------------------------------------------------------------
+ai_models:
+  # --- OpenRouter Configuration (Primary Connection Method) ---
+  primary_model: "deepseek/deepseek-prover-v2:free" # Preferred model via OpenRouter
+  fallback_models: # Fallback models via OpenRouter, in order of preference
+    - "mistralai/mistral-small-3.1-24b-instruct:free"
+    - "microsoft/phi-4-reasoning:free"
+    - "nousresearch/deephermes-3-mistral-24b-preview:free"
+    - "qwen/qwen3-4b:free"
+    - "deepseek/deepseek-r1-distill-qwen-32b:free"
+  
+  base_url: "https://openrouter.ai/api/v1/chat/completions" # API endpoint for OpenRouter
+  timeout: 30                                   # API connection timeout (seconds)
+  max_tokens: 1500                              # Max tokens in response from OpenRouter models
+  temperature: 0.7                              # Model temperature for creativity
+  max_retries: 3                                # Number of retry attempts on failure for OpenRouter
+  retry_delay: 1                                # Delay between retries (seconds)
+  max_consecutive_failures: 5                   # Max consecutive failures for an OpenRouter model before temporary disable
+  rate_limit_window: 60                         # Rate limit window duration (seconds)
+  
+  min_response_length: 10                       # Minimum acceptable response length
+  max_response_length: 8000                     # Maximum acceptable response length
+  preserve_markdown: false                      # Whether to preserve Markdown formatting in the response
+
+  fallback_responses:                           # Fallback text responses if all AI models (including direct) fail
+    - "I apologize, but I'm currently experiencing technical difficulties. Please try again in a few moments."
+    - "I'm temporarily unable to process your request due to system issues. Please contact support if this persists."
+    - "There seems to be a temporary service disruption. Please try your question again shortly."
+
+  # --- Direct Hugging Face API Fallback Configuration ---
+  direct_fallback_enabled: true   # Set to true to enable direct Hugging Face API as a final fallback
+
+  huggingface_direct_provider:
+    provider_type: "huggingface"          # Identifier for the provider type in AIHandler
+    api_key_env_var: "HF_API_TOKEN"       # Environment variable for Hugging Face API Token
+    # Default model to try first via Hugging Face direct API
+    primary_model_hf: "google/gemma-7b-it" 
+    
+    # Fallback models to try via Hugging Face direct API if primary_model_hf fails
+    # IMPORTANT: Verify these model IDs are correct and available on Hugging Face Inference API.
+    # The AIHandler's HuggingFace provider will construct the base_url dynamically for these.
+    # e.g., https://api-inference.huggingface.co/models/<MODEL_ID_HERE>
+    fallback_models_hf:
+      - "HuggingFaceH4/zephyr-7b-beta" 
+      - "NousResearch/Nous-Hermes-2-Mistral-7B-DPO"
+      - "openchat/openchat-3.5-1210" # Verify if this is the exact ID for 'openchat 3.5'
+      - "mistralai/Mistral-7B-Instruct-v0.1"
+      # Placeholder for DeepSeek V2.5 - you need the exact Hugging Face Model ID
+      # - "deepseek-ai/DeepSeek-V2-Lite-Chat" # Example: V2 Lite is on HF. Check for V2.5
+      # Note: DeepSeek-V2.5 might be a very large model and might not be suitable for free/standard inference APIs.
+      #       If "deepseek-ai/DeepSeek-V2.5-1210" is not a valid HF ID, remove or replace it.
+
+    # Optional: Specific parameters for Hugging Face API calls, if different from general settings
+    # hf_timeout: 45                # Example: Longer timeout for potentially larger direct models
+    # hf_max_new_tokens: 1024       # Hugging Face API often uses 'max_new_tokens' for response length
+    # hf_temperature: 0.6           # Example: Different temperature for direct models
+
+# -----------------------------------------------------------------------------
+# Cache Configuration
+# -----------------------------------------------------------------------------
+cache:
+  max_size: 1000
+  ttl: 3600
+  cleanup_interval: 300
+  categories:
+    chat_response: { ttl: 3600, persistent: true, compress: true }
+    question_analysis: { ttl: 1800, persistent: true, compress: false }
+    website_research: { ttl: 7200, persistent: true, compress: true }
+    prompt_template: { ttl: 0, persistent: true, compress: false }
+    ai_response: { ttl: 3600, persistent: true, compress: true }
+
+# -----------------------------------------------------------------------------
+# Question Processing
+# -----------------------------------------------------------------------------
+question_processing:
+  min_length: 3
+  max_length: 2000
+  supported_languages: ["en", "ar", "es", "fr", "de"]
+  min_confidence_threshold: 0.6
+  enable_caching: true
+
+# -----------------------------------------------------------------------------
+# Website Research
+# -----------------------------------------------------------------------------
+website_research:
+  max_results: 10
+  similarity_threshold: 0.6
+  content_snippet_length: 500
+  index_refresh_interval: 86400
+  keyword_boost_factor: 1.5
+  title_boost_factor: 2.0
+  summary_boost_factor: 1.3
+
+# -----------------------------------------------------------------------------
+# Prompt Templates
+# -----------------------------------------------------------------------------
+prompts:
+  system_template_file: "system_prompt.txt"
+  max_context_length: 4000
+  max_prompt_length: 8000
+  context_truncation_strategy: 'smart'
+  prompt_optimization: true
+
+# -----------------------------------------------------------------------------
+# Logging Configuration
+# -----------------------------------------------------------------------------
+logging:
+  level: "INFO"
+  max_file_size_mb: 10
+  backup_count: 5
+  console_output: true
+
+# -----------------------------------------------------------------------------
+# API Configuration
+# -----------------------------------------------------------------------------
+api:
+  cors_origins: ["*"] # Consider restricting this in production
+  gzip_compression: true
