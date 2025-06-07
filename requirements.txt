@@ -37,3 +37,27 @@ psutil>=5.9.0,<5.10.0 # Uncommented as _get_system_info in utils.py tries to use
 requests>=2.28.0,<3.0.0
 aiofiles>=23.1.0,<24.0.0
 regex>=2023.10.3
+
+# For DOCX (Word documents) processing
+python-docx>=1.1.0,<1.2.0
+
+# For XLSX (Excel documents) processing
+openpyxl>=3.1.0,<3.2.0
+
+# For PDF processing (Primary library used in script first)
+pdfplumber>=0.10.0,<0.12.0
+
+# For PDF processing (Fallback library - pypdf is generally recommended over PyPDF2)
+# Choose one or both if strict fallback as in script is desired.
+pypdf>=3.17.0,<4.3.0
+# PyPDF2>=3.0.0,<3.1.0 # If you want to keep PyPDF2 as an explicit fallback option
+
+# --- Optional Arabic NLP Libraries (install if ISRIStemmer from NLTK is not sufficient) ---
+# These are attempted as fallbacks by the script if NLTK's ISRIStemmer has issues or is not preferred.
+# Only add the ones you intend to evaluate/use.
+
+# Qutuf (for Arabic stemming/morphological analysis)
+# qutuf>=2.2
+
+# Arabycia (for Arabic NLP, including stemming)
+# arabycia>=0.2.0
