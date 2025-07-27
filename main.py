@@ -488,7 +488,7 @@ async def initialize_remaining_components() -> bool:
             config=research_config,
             cache_manager=app_components['cache_manager']
         )
-        logger.info(f"Knowledge base researcher initialized from {knowledge_base_file} - Max results: {research_config.get('max_results', 10)}"
+        logger.info(f"Knowledge base researcher initialized from {knowledge_base_file} - Max results: {research_config.get('max_results', 10)}")
                    
         
         # Initialize prompt builder
