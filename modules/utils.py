@@ -310,7 +310,7 @@ def validate_environment() -> bool:
         required_files = [
             "config/default.yaml",
             "config/institution.yaml",
-            "data/pages.json"
+            "data/knowledge_base.json"
         ]
         
         for file_path in required_files:
