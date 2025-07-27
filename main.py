@@ -131,7 +131,7 @@ class HealthStatus(BaseModel):
 # Global application components
 app_components = {
     'question_processor': None,
-    'website_researcher': None,
+    'knowledge_base_researcher': None,
     'prompt_builder': None,
     'ai_handler': None,
     'cache_manager': None,
