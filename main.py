@@ -718,7 +718,7 @@ async def process_chat_message(user_message: UserMessage, background_tasks: Back
     except HTTPException:
         raise
     except Exception as e:
-    	import traceback
+        import traceback
         processing_time = (datetime.now() - start_time).total_seconds()
         session_info = f" [Session: {user_message.session_id}]" if user_message.session_id else ""
         logger.error(f"An unhandled exception occurred: {e}{session_info}\n{traceback.format_exc()}")
