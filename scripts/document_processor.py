@@ -68,7 +68,7 @@ if DEBUG:
 # Directories (same as v1.0)
 BASE_DIR = Path(__file__).parent.parent
 DATA_DIR = BASE_DIR / "data"
-OUTPUT_DIR = DATA_DIR / "institution_info"
+OUTPUT_DIR = DATA_DIR
 LOG_DIR = BASE_DIR / "logs"
 
 # Create directories
