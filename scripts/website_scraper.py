@@ -22,6 +22,7 @@ from typing import Dict, List, Tuple, Optional, Any
 from datetime import datetime
 import logging
 from http.client import HTTPConnection
+import sys
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
