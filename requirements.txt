@@ -2,6 +2,9 @@
 fastapi>=0.115.2
 uvicorn[standard]>=0.29.0,<0.31.0
 
+# --- GUI for Admin Scripts ---
+gradio>=4.0.0,<5.0.0
+
 # Configuration and Environment
 python-dotenv>=1.0.0,<1.1.0
 PyYAML>=6.0,<6.1
